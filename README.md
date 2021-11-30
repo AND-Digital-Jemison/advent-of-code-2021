@@ -1,4 +1,4 @@
-#Advent of Code 2021
+# åAdvent of Code 2021
 
 ## Getting Involved
 
