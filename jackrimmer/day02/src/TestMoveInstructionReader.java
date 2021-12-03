@@ -5,7 +5,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestMoveInstructionReader {
-    private List<Vector2D> moveInstructions = MoveInstructionReader.readMoveInstructionsToVectors();
+    private List<MoveInstruction> moveInstructions = MoveInstructionReader.readMoveInstructions();
 
     @Test
     public void testFileIsRead() {
