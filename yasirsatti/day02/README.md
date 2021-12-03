@@ -2,7 +2,7 @@
 
 ## To run
 
-$ node src/public/day02.js src/public/sonardata.rtf
+$ node src/public/day02pilotSubmarine.js src/public/pilotData.txt
 
 ## To test
 
