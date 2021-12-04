@@ -22,7 +22,7 @@ public class BinaryAnalyzer {
         List<String> tempReportCopy = new ArrayList<>(diagnosticReport);
 
         for (int i = 0; i < bitColumns.size(); i++) {
-            FrequencyType frequencyType = metric == metric.OXYGEN_GENERATOR_RATING ? FrequencyType.HIGHEST : FrequencyType.LOWEST;
+            FrequencyType frequencyType = metric == Metric.OXYGEN_GENERATOR_RATING ? FrequencyType.HIGHEST : FrequencyType.LOWEST;
             int highestFrequencyBit = frequency(frequencyType, bitColumns.get(i));
 
             for (String bits: tempReport) {
@@ -60,8 +60,8 @@ public class BinaryAnalyzer {
         for (int column = 0; column < diagnosticReport.get(0).length(); column++) {
             var bitSetBuilder = new StringBuilder();
 
-            for (int row = 0; row < diagnosticReport.size(); row++) {
-                bitSetBuilder.append(diagnosticReport.get(row).charAt(column));
+            for (String s : diagnosticReport) {
+                bitSetBuilder.append(s.charAt(column));
             }
 
             bitSet.add(bitSetBuilder.toString());
@@ -79,19 +79,9 @@ public class BinaryAnalyzer {
             }
         }
 
-        switch(frequencyType) {
-            case HIGHEST:
-                if (zeroCount > mostCommonThreshold) {
-                    return 0;
-                }
-
-                return zeroCount > mostCommonThreshold ? 0 : 1;
-
-            case LOWEST:
-                return zeroCount > mostCommonThreshold ? 1 : 0;
-
-            default:
-                throw new IllegalArgumentException("Invalid rate type");
-        }
+        return switch (frequencyType) {
+            case HIGHEST -> zeroCount > mostCommonThreshold ? 0 : 1;
+            case LOWEST -> zeroCount > mostCommonThreshold ? 1 : 0;
+        };
     }
 }
