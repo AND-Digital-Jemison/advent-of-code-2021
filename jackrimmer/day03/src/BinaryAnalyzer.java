@@ -10,8 +10,8 @@ public class BinaryAnalyzer {
     }
 
     public int calculatePowerConsumed(List<String> diagnosticReport) {
-        int gammaRate = calculatePowerRating(Frequency.HIGHEST, diagnosticReport);
-        int epsilonRate = calculatePowerRating(Frequency.LOWEST, diagnosticReport);
+        int gammaRate = calculatePowerRating(FrequencyType.HIGHEST, diagnosticReport);
+        int epsilonRate = calculatePowerRating(FrequencyType.LOWEST, diagnosticReport);
 
         return gammaRate * epsilonRate;
     }
@@ -22,8 +22,8 @@ public class BinaryAnalyzer {
         List<String> tempReportCopy = new ArrayList<>(diagnosticReport);
 
         for (int i = 0; i < bitColumns.size(); i++) {
-            Frequency frequency = metric == metric.OXYGEN_GENERATOR_RATING ? Frequency.HIGHEST : Frequency.LOWEST;
-            int highestFrequencyBit = frequency(frequency, bitColumns.get(i));
+            FrequencyType frequencyType = metric == metric.OXYGEN_GENERATOR_RATING ? FrequencyType.HIGHEST : FrequencyType.LOWEST;
+            int highestFrequencyBit = frequency(frequencyType, bitColumns.get(i));
 
             for (String bits: tempReport) {
                 if (Character.getNumericValue(bits.charAt(i)) != highestFrequencyBit) {
@@ -33,23 +33,22 @@ public class BinaryAnalyzer {
 
             tempReport.clear();
             tempReport.addAll(tempReportCopy);
+            bitColumns = getBitColumns(tempReport);
 
             if (tempReportCopy.size() == 1) {
-                break;
+                return Integer.parseInt(tempReportCopy.get(0), 2);
             }
-
-            bitColumns = getBitColumns(tempReport);
         }
 
-        return Integer.parseInt(tempReportCopy.get(0), 2);
+        throw new IllegalArgumentException("Must have a single remaining report value");
     }
 
-    private int calculatePowerRating(Frequency frequency, List<String> diagnosticReport) {
+    private int calculatePowerRating(FrequencyType frequencyType, List<String> diagnosticReport) {
         List<String> bitColumns = getBitColumns(diagnosticReport);
 
         var ratingBuilder = new StringBuilder();
         for (String bits: bitColumns) {
-            ratingBuilder.append(frequency(frequency, bits));
+            ratingBuilder.append(frequency(frequencyType, bits));
         }
 
         return Integer.parseInt(ratingBuilder.toString(), 2);
@@ -71,7 +70,7 @@ public class BinaryAnalyzer {
         return bitSet;
     }
 
-    private int frequency(Frequency frequency, String bits) {
+    private int frequency(FrequencyType frequencyType, String bits) {
         int mostCommonThreshold = bits.length() / 2;
         int zeroCount = 0;
         for (int i = 0; i < bits.length(); i++) {
@@ -80,7 +79,7 @@ public class BinaryAnalyzer {
             }
         }
 
-        switch(frequency) {
+        switch(frequencyType) {
             case HIGHEST:
                 if (zeroCount > mostCommonThreshold) {
                     return 0;
