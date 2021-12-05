@@ -1,0 +1,4 @@
+public enum Metric {
+    OXYGEN_GENERATOR_RATING,
+    CO2_SCRUBBER_RATING
+}
