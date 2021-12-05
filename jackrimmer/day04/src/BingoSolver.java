@@ -21,6 +21,8 @@ public class BingoSolver {
                     }
                 }
             }
+
+            iterator = boards.iterator();
         }
 
         throw new IllegalArgumentException("Game must be solvable");

@@ -8,13 +8,17 @@ public class Main {
         String rawNumberDrawData = reader.getNumberDrawData();
         List<String> rawBingoBoardData = reader.getBingoBoardData();
 
-        List<Integer> numberDraw = BingoDataFormatter.formatNumberDraw(rawNumberDrawData);
-        LinkedList<BingoSquare[][]> bingoBoards = BingoDataFormatter.formatBingoBoards(rawBingoBoardData);
-
         var solver = new BingoSolver();
 
-        int partOneSolution = solver.solveGame(numberDraw, bingoBoards, Outcome.WIN_FIRST);
-        int partTwoSolution = solver.solveGame(numberDraw, bingoBoards, Outcome.WIN_LAST);
+        List<Integer> numberDrawPartOne = BingoDataFormatter.formatNumberDraw(rawNumberDrawData);
+        LinkedList<BingoSquare[][]> bingoBoardsPartOne = BingoDataFormatter.formatBingoBoards(rawBingoBoardData);
+
+        int partOneSolution = solver.solveGame(numberDrawPartOne, bingoBoardsPartOne, Outcome.WIN_FIRST);
+
+        List<Integer> numberDrawPartTwo = BingoDataFormatter.formatNumberDraw(rawNumberDrawData);
+        LinkedList<BingoSquare[][]> bingoBoardsPartTwo = BingoDataFormatter.formatBingoBoards(rawBingoBoardData);
+
+        int partTwoSolution = solver.solveGame(numberDrawPartTwo, bingoBoardsPartTwo, Outcome.WIN_LAST);
 
         System.out.println(partOneSolution);
         System.out.println(partTwoSolution);
