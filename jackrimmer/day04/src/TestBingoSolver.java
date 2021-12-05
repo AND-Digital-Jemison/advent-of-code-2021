@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -10,7 +11,7 @@ public class TestBingoSolver {
     @Test
     public void testGameSolvedForWinFirst() {
         List<Integer> numberDraw = BingoDataFormatter.formatNumberDraw(bingoData.getNumberDrawData());
-        List<BingoSquare[][]> boards = BingoDataFormatter.formatBingoBoards(bingoData.getBingoBoardData());
+        LinkedList<BingoSquare[][]> boards = BingoDataFormatter.formatBingoBoards(bingoData.getBingoBoardData());
 
         assertEquals(4512, solver.solveGame(numberDraw, boards, Outcome.WIN_FIRST));
     }
@@ -18,7 +19,7 @@ public class TestBingoSolver {
     @Test
     public void testGameSolvedForWinLast() {
         List<Integer> numberDraw = BingoDataFormatter.formatNumberDraw(bingoData.getNumberDrawData());
-        List<BingoSquare[][]> boards = BingoDataFormatter.formatBingoBoards(bingoData.getBingoBoardData());
+        LinkedList<BingoSquare[][]> boards = BingoDataFormatter.formatBingoBoards(bingoData.getBingoBoardData());
 
         assertEquals(1924, solver.solveGame(numberDraw, boards, Outcome.WIN_LAST));
     }

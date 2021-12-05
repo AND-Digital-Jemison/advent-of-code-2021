@@ -1,3 +1,4 @@
+import java.util.LinkedList;
 import java.util.List;
 
 public class Main {
@@ -8,7 +9,7 @@ public class Main {
         List<String> rawBingoBoardData = reader.getBingoBoardData();
 
         List<Integer> numberDraw = BingoDataFormatter.formatNumberDraw(rawNumberDrawData);
-        List<BingoSquare[][]> bingoBoards = BingoDataFormatter.formatBingoBoards(rawBingoBoardData);
+        LinkedList<BingoSquare[][]> bingoBoards = BingoDataFormatter.formatBingoBoards(rawBingoBoardData);
 
         var solver = new BingoSolver();
 
@@ -16,5 +17,6 @@ public class Main {
         int partTwoSolution = solver.solveGame(numberDraw, bingoBoards, Outcome.WIN_LAST);
 
         System.out.println(partOneSolution);
+        System.out.println(partTwoSolution);
     }
 }

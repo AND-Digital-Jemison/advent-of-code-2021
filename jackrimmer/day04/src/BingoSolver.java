@@ -1,15 +1,19 @@
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class BingoSolver {
     private int finalSolution;
 
-    public int solveGame(List<Integer> numberDraw, List<BingoSquare[][]> boards, Outcome outcome) {
+    public int solveGame(List<Integer> numberDraw, LinkedList<BingoSquare[][]> boards, Outcome outcome) {
+        Iterator<BingoSquare[][]> iterator = boards.iterator();
         for (int drawnNumber: numberDraw) {
-            for (BingoSquare[][] board: boards) {
+            while (iterator.hasNext()) {
+                BingoSquare[][] board = iterator.next();
                 boolean roundWon = playRound(drawnNumber, board);
                 if (roundWon) {
-                    if (outcome == Outcome.WIN_LAST && boards.size() > 1) {
-                        boards.remove(board);
+                    if (outcome == Outcome.WIN_LAST && boards.size() != 1) {
+                        iterator.remove();
                         continue;
                     }
                     else {

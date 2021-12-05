@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public class BingoDataFormatter {
@@ -14,8 +15,8 @@ public class BingoDataFormatter {
         return formattedNumberDraw;
     }
 
-    public static List<BingoSquare[][]> formatBingoBoards(List<String> unformattedData) {
-        List<BingoSquare[][]> bingoCards = new ArrayList<>();
+    public static LinkedList<BingoSquare[][]> formatBingoBoards(List<String> unformattedData) {
+        LinkedList<BingoSquare[][]> bingoCards = new LinkedList<>();
 
         for (int i = 0; i < unformattedData.size(); i += 6) {
             BingoSquare[][] bingoCard = formatBingoCard(unformattedData.subList(i + 1, i + 6));
