@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public abstract class BaseChallenge {
-    protected Map<Integer, List<String>> rawData = new HashMap<>();
+    public Map<Integer, List<String>> rawData = new HashMap<>();
 
     public BaseChallenge(String[] filePaths){
         for (int i = 0; i < filePaths.length; i++) {
