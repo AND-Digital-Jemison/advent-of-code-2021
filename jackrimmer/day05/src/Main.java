@@ -14,6 +14,6 @@ public class Main {
         System.out.println();
         System.out.println();
 
-        System.out.println("Part 1 solution: " + ventScanner.countMultipleOverlaps());
+        System.out.println("Part 2 solution: " + ventScanner.countMultipleOverlaps());
     }
 }

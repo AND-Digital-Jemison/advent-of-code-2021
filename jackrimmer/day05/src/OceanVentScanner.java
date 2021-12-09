@@ -76,7 +76,7 @@ public class OceanVentScanner {
                 interimVectors = startVector.allHorizontalPointsBetweenSelfAnd(endVector);
             }
             else {
-                interimVectors = new ArrayList<>();
+                interimVectors = startVector.allDiagonalPointsBetweenSelfAnd(endVector);
             }
 
             for (Vector2D vector: interimVectors) {

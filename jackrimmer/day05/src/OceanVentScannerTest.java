@@ -84,6 +84,37 @@ public class OceanVentScannerTest {
         expectedOceanFloor[4][2].addOverlap();
         expectedOceanFloor[4][1].addOverlap();
 
+        expectedOceanFloor[0][8].addOverlap();
+        expectedOceanFloor[1][7].addOverlap();
+        expectedOceanFloor[2][6].addOverlap();
+        expectedOceanFloor[3][5].addOverlap();
+        expectedOceanFloor[4][4].addOverlap();
+        expectedOceanFloor[5][3].addOverlap();
+        expectedOceanFloor[6][2].addOverlap();
+        expectedOceanFloor[7][1].addOverlap();
+        expectedOceanFloor[8][0].addOverlap();
+
+        expectedOceanFloor[4][6].addOverlap();
+        expectedOceanFloor[3][5].addOverlap();
+        expectedOceanFloor[2][4].addOverlap();
+        expectedOceanFloor[1][3].addOverlap();
+        expectedOceanFloor[0][2].addOverlap();
+
+        expectedOceanFloor[0][0].addOverlap();
+        expectedOceanFloor[1][1].addOverlap();
+        expectedOceanFloor[2][2].addOverlap();
+        expectedOceanFloor[3][3].addOverlap();
+        expectedOceanFloor[4][4].addOverlap();
+        expectedOceanFloor[5][5].addOverlap();
+        expectedOceanFloor[6][6].addOverlap();
+        expectedOceanFloor[7][7].addOverlap();
+        expectedOceanFloor[8][8].addOverlap();
+
+        expectedOceanFloor[5][5].addOverlap();
+        expectedOceanFloor[4][6].addOverlap();
+        expectedOceanFloor[3][7].addOverlap();
+        expectedOceanFloor[2][8].addOverlap();
+
         OceanTile[][] actualOceanFloor = ventScanner.getOceanFloor();
 
         for (int y = 0; y < expectedOceanFloor.length; y++) {
@@ -104,7 +135,7 @@ public class OceanVentScannerTest {
     }
 
     @Test
-    public void testMultipleverlapCount() {
+    public void testMultipleOverlapCount() {
         List<String> rawData = reader.getRawVentData();
         List<Vector2D[]> ventData = VentDataFormatter.formatAll(rawData);
 
@@ -112,6 +143,6 @@ public class OceanVentScannerTest {
 
         int overlaps = ventScanner.countMultipleOverlaps();
 
-        assertEquals(5, overlaps);
+        assertEquals(12, overlaps);
     }
 }
