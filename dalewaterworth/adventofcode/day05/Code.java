@@ -29,6 +29,10 @@ public class Code extends BaseChallenge {
                     Integer.valueOf(right[0]),
                     Integer.valueOf(right[1])));
         }
+        setGrid();
+    }
+
+    public void setGrid(){
         var max = coordinates.stream()
                 .map(x -> Arrays.asList(x.x1, x.y1, x.x2, x.y2))
                 .flatMapToInt(x -> x.stream().mapToInt(y -> y))
@@ -57,7 +61,11 @@ public class Code extends BaseChallenge {
             for (int[] points : coordinates.points) {
                 var x = points[0];
                 var y = points[1];
-                grid[x][y].value++;
+               try {
+                   grid[x][y].value++;
+               } catch (Exception e){
+                   System.out.println(e);
+               }
             }
         }
         printUtil();
@@ -97,7 +105,6 @@ class Coordinates {
             points.add(new int[]{x1, y1});
             points.addAll(getPointsBetween());
             points.add(new int[]{x2, y2});
-
         }
 
     }
@@ -132,9 +139,15 @@ class Coordinates {
             for (int i = 1; i < diff; i++) {
                 points.add(new int[]{x1 + i, y2,});
             }
-        } /*else {
+        } else if(y1 > y2){
+            var diff = y1 - y2;
+            for (int i = 1; i < diff; i++) {
+                points.add(new int[]{x2, y1 + i});
+            }
+        }
+        else {
             throw new RuntimeException("no matches");
-        }*/
+        }
 
         return points;
     }
