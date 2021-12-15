@@ -1,0 +1,3 @@
+[submodule "johnnicholas/aoc2021"]
+	path = johnnicholas/aoc2021
+	url = https://github.com/MrTortoise/aoc2021.git
