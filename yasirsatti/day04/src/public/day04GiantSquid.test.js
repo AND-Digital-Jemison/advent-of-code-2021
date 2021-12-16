@@ -2,9 +2,9 @@ const randomNumbersAll = [
   7, 4, 9, 5, 11, 17, 23, 2, 0, 14, 21, 24, 10, 16, 13, 6, 15, 25, 12, 22, 18,
   20, 8, 19, 3, 26, 1,
 ];
-const randomNumbersGrp1 = [7, 4, 9, 5, 11, 17, 23, 2];
-const randomNumbersGrp2 = [0, 14, 21, 24, 10, 16, 13, 6, 15];
-const randomNumbersGrp3 = [25, 12, 22, 18, 20, 8, 19, 3, 26, 1];
+const randomNumbersGrp1 = [7, 4, 9, 5, 11];
+const randomNumbersGrp2 = [17, 23, 2, 0, 14];
+const randomNumbersGrp3 = [24];
 const randomNumbersCol4Winner = [
   33, 4, 99, 5, 11, 55, 23, 2, 0, 14, 21, 88, 10, 16, 13, 6, 7, 25, 12, 222, 24,
   18, 20, 8, 19, 3, 26, 1,
@@ -82,92 +82,19 @@ const number = (board, drawnNumber) => {
   return count;
 };
 
-const markDrawnNumbers = (board, drawnNumbers, boardCheckedNumbers) => {
-  let count = 0;
-  let lastCalledNumber;
-  checkedNumbers = boardCheckedNumbers.map((y) => y);
-  for (let i = 0; i < drawnNumbers.length; i++) {
-    for (let x = 0; x < 5; x++) {
-      for (let y = 0; y < 5; y++) {
-        if (board[x][y] === drawnNumbers[i]) {
-          count += 1;
-          checkedNumbers[x][y] = true;
-          lastCalledNumber = drawnNumbers[i];
-        }
-      }
-    }
-  }
-  return [count, checkedNumbers, lastCalledNumber];
-};
-
-const isWinnerBoard = (boardCheckedNumbers) => {
-  let isWinnder = false;
-  for (let row = 0; row < 5; row++) {
-    if (boardCheckedNumbers[row].includes(false)) continue;
-    isWinnder = true;
-  }
-  if (!isWinnder) {
-    for (let column = 0; column < 5; column++) {
-      let col1CheckedCount = 0;
-      let col2CheckedCount = 0;
-      let col3CheckedCount = 0;
-      let col4CheckedCount = 0;
-      for (let row = 0; row < 5; row++) {
-        if (boardCheckedNumbers[row][column] === false) continue;
-        // eslint-disable-next-line default-case
-        switch (column) {
-          case 0:
-            col1CheckedCount += 1;
-            if (col1CheckedCount === 4) {
-              isWinnder = true;
-              continue;
-            }
-            break;
-          case 1:
-            col2CheckedCount += 1;
-            if (col2CheckedCount === 4) {
-              isWinnder = true;
-              continue;
-            }
-            break;
-          case 2:
-            col3CheckedCount += 1;
-            if (col3CheckedCount === 4) {
-              isWinnder = true;
-              continue;
-            }
-            break;
-          case 3:
-            col4CheckedCount += 1;
-            if (col4CheckedCount === 4) {
-              isWinnder = true;
-              continue;
-            }
-            break;
-        }
-      }
-    }
-  }
-  return isWinnder;
-};
-
-const calculateSumUnmarkedNumbers = (board, boardCheckedNumbers) => {
-  let sum = 0;
-  for (let column = 0; column < 5; column++) {
-    for (let row = 0; row < 5; row++) {
-      if (boardCheckedNumbers[row][column] === true) continue;
-      sum += board[row][column];
-    }
-  }
-  return sum;
-};
-
 const checkNumbersAreMarked = (number) =>
   checkedNumbers[randomNumbersAll.indexOf(number)];
 
 const readBoardValue = (board, row, column) => {
   return board[row][column];
 };
+
+const readDataFile = require('./readDataFile');
+const extractBoardsNumbers = require('./day04extractBoardsNumbers');
+const findWinningBoard = require('./day04findWinnigBoard');
+const markDrawnNumbers = require('./day04markDrawnNumbers');
+const calculateSumUnmarkedNumbers = require('./day04calculateSumUnmarkedNumbers');
+const checkWinnerBoard = require('./day04checkWinnerBoard');
 
 describe("Giant squid tests (local)", () => {
   it("1. draw one number", () => {
@@ -193,12 +120,10 @@ describe("Giant squid tests (local)", () => {
   });
 
   it("6. Check board 1 values", () => {
-    console.log(board1);
     expect(readBoardValue(board1, 1, 1)).toBe(2);
   });
 
   it("7. Mark drawn numbers on board 1", () => {
-    console.log("Board 1 ", board1);
     expect(markDrawnNumbers(board1, randomNumbersAll, board1CheckedNumbers)[0]).toBe(25);
   });
 
@@ -207,8 +132,7 @@ describe("Giant squid tests (local)", () => {
     [
       count, board1CheckedNumbers,
     ] = markDrawnNumbers(board1, randomNumbersAll, board1CheckedNumbers);
-    console.log(board1CheckedNumbers);
-    expect(isWinnerBoard(board1CheckedNumbers)).toBe(true);
+    expect(checkWinnerBoard(board1CheckedNumbers)).toBe(true);
   });
 
   it("9. verifies the winner board with group 1 numbers drawn", () => {
@@ -216,7 +140,7 @@ describe("Giant squid tests (local)", () => {
     [
       count, board1CheckedNumbers,
     ] = markDrawnNumbers(board1, randomNumbersGrp1, board1CheckedNumbers);
-    expect(isWinnerBoard(board1CheckedNumbers)).toBe(false);
+    expect(checkWinnerBoard(board1CheckedNumbers)).toBe(true);
   });
 
   it("10. verifies the winner board with group 1 & 2 numbers drawn", () => {
@@ -227,7 +151,7 @@ describe("Giant squid tests (local)", () => {
     [
       count, board1CheckedNumbers,
     ] = markDrawnNumbers(board1, randomNumbersGrp2, board1CheckedNumbers);
-    expect(isWinnerBoard(board1CheckedNumbers)).toBe(true);
+    expect(checkWinnerBoard(board1CheckedNumbers)).toBe(true);
   });
 
   it("11. verifies the winner board with group 1 & 2 & 3 numbers drawn", () => {
@@ -241,7 +165,7 @@ describe("Giant squid tests (local)", () => {
     [
       count, board1CheckedNumbers,
     ] = markDrawnNumbers(board1, randomNumbersGrp3, board1CheckedNumbers);
-    expect(isWinnerBoard(board1CheckedNumbers)).toBe(true);
+    expect(checkWinnerBoard(board1CheckedNumbers)).toBe(true);
   });
 
   it("12. verifies sum of unchecked numbers of winner board", () => {
@@ -264,7 +188,7 @@ describe('Example boards tests', () => {
     [
       count, board1CheckedNumbers,
     ] = markDrawnNumbers(boards[0], drawnNumbers, board1CheckedNumbers);
-    expect(isWinnerBoard(board1CheckedNumbers)).toBe(true);
+    expect(checkWinnerBoard(board1CheckedNumbers)).toBe(false);
   });
 
   it("2. Make 1st draw on example board 2", () => {
@@ -273,7 +197,7 @@ describe('Example boards tests', () => {
     [
       count, board2CheckedNumbers,
     ] = markDrawnNumbers(boards[1], drawnNumbers, board2CheckedNumbers);
-    expect(isWinnerBoard(board2CheckedNumbers)).toBe(true);
+    expect(checkWinnerBoard(board2CheckedNumbers)).toBe(false);
   });
 
   it("3. Make 1st draw on example board 3", () => {
@@ -282,7 +206,7 @@ describe('Example boards tests', () => {
     [
       count, board3CheckedNumbers,
     ] = markDrawnNumbers(boards[2], drawnNumbers, board3CheckedNumbers);
-    expect(isWinnerBoard(board3CheckedNumbers)).toBe(true);
+    expect(checkWinnerBoard(board3CheckedNumbers)).toBe(false);
   });
 
   it("4. Make 2nd draw on example board 1", () => {
@@ -291,7 +215,7 @@ describe('Example boards tests', () => {
     [
       count, board1CheckedNumbers,
     ] = markDrawnNumbers(boards[0], drawnNumbers, board1CheckedNumbers);
-    expect(isWinnerBoard(board1CheckedNumbers)).toBe(true);
+    expect(checkWinnerBoard(board1CheckedNumbers)).toBe(false);
   });
 
   it("5. Make 2nd draw on example board 2", () => {
@@ -300,7 +224,7 @@ describe('Example boards tests', () => {
     [
       count, board2CheckedNumbers,
     ] = markDrawnNumbers(boards[1], drawnNumbers, board2CheckedNumbers);
-    expect(isWinnerBoard(board2CheckedNumbers)).toBe(true);
+    expect(checkWinnerBoard(board2CheckedNumbers)).toBe(false);
   });
 
   it("6. Make 2nd draw on example board 3", () => {
@@ -309,7 +233,7 @@ describe('Example boards tests', () => {
     [
       count, board3CheckedNumbers,
     ] = markDrawnNumbers(boards[2], drawnNumbers, board3CheckedNumbers);
-    expect(isWinnerBoard(board3CheckedNumbers)).toBe(true);
+    expect(checkWinnerBoard(board3CheckedNumbers)).toBe(false);
   });
 
   it("7. Make 3rd draw on example board 1", () => {
@@ -318,7 +242,7 @@ describe('Example boards tests', () => {
     [
       count, board1CheckedNumbers,
     ] = markDrawnNumbers(boards[0], drawnNumbers, board1CheckedNumbers);
-    expect(isWinnerBoard(board1CheckedNumbers)).toBe(true);
+    expect(checkWinnerBoard(board1CheckedNumbers)).toBe(false);
   });
 
   it("8. Make 3rd draw on example board 2", () => {
@@ -327,7 +251,7 @@ describe('Example boards tests', () => {
     [
       count, board2CheckedNumbers,
     ] = markDrawnNumbers(boards[1], drawnNumbers, board2CheckedNumbers);
-    expect(isWinnerBoard(board2CheckedNumbers)).toBe(true);
+    expect(checkWinnerBoard(board2CheckedNumbers)).toBe(false);
   });
 
   it("9. Make 3rd draw on example board 3", () => {
@@ -336,12 +260,17 @@ describe('Example boards tests', () => {
     [
       count, board3CheckedNumbers,
     ] = markDrawnNumbers(boards[2], drawnNumbers, board3CheckedNumbers);
-    expect(isWinnerBoard(board3CheckedNumbers)).toBe(true);
+    expect(checkWinnerBoard(board3CheckedNumbers)).toBe(true);
   });
 
   it("10. Calculate sum of unmarked numbers for winner board 3", () => {
     const sum = calculateSumUnmarkedNumbers(board3, board3CheckedNumbers);
     expect(sum).toBe(188);
+  });
+
+  it("11. Calculate finale score for winner board 3", () => {
+    const sum = calculateSumUnmarkedNumbers(board3, board3CheckedNumbers);
+    expect(sum * 24).toBe(4512);
   });
 });
 
@@ -352,7 +281,7 @@ describe('Example boards tests using all random numbers', () => {
     [
       count, board1CheckedNumbers,
     ] = markDrawnNumbers(boards[0], drawnNumbers, board1CheckedNumbers);
-    expect(isWinnerBoard(board1CheckedNumbers)).toBe(true);
+    expect(checkWinnerBoard(board1CheckedNumbers)).toBe(false);
   });
 
   it("2. Make 1st draw on example board 2", () => {
@@ -361,7 +290,7 @@ describe('Example boards tests using all random numbers', () => {
     [
       count, board2CheckedNumbers,
     ] = markDrawnNumbers(boards[1], drawnNumbers, board2CheckedNumbers);
-    expect(isWinnerBoard(board2CheckedNumbers)).toBe(true);
+    expect(checkWinnerBoard(board2CheckedNumbers)).toBe(false);
   });
 
   it("3. Make 1st draw on example board 3", () => {
@@ -370,7 +299,7 @@ describe('Example boards tests using all random numbers', () => {
     [
       count, board3CheckedNumbers,
     ] = markDrawnNumbers(boards[2], drawnNumbers, board3CheckedNumbers);
-    expect(isWinnerBoard(board3CheckedNumbers)).toBe(true);
+    expect(checkWinnerBoard(board3CheckedNumbers)).toBe(true);
   });
 
   it("4. Calculate sum of unmarked numbers for winner board 3", () => {
@@ -380,24 +309,25 @@ describe('Example boards tests using all random numbers', () => {
 });
 
 describe("Giant squid tests (live code)", () => {
-  const findWinningBoard = require('./day04findWinnigBoard');
-  const drawnNumbers = [7, 4, 9, 5, 11, 17, 23, 2, 0, 14, 21, 24];
-
-  it("1. verifies sum of unchecked numbers of single board using all random numbers", () => {
+  it("1. Find final score for example data", () => {
+    const data = readDataFile('src/public/day04exampleDataNumbers.txt');
+    console.log(data);
+    const [randomNumbers, exampleBoards, exampleBoardsCheckedNumbers] = extractBoardsNumbers(data);
     const [
       isWinnerBoard, finalScore,
-    ] = findWinningBoard(randomNumbersAll, board1, board1CheckedNumbers);
-    expect(isWinnerBoard).toBe(true);
+    ] = findWinningBoard(randomNumbers, exampleBoards, exampleBoardsCheckedNumbers);
     expect(finalScore).toBe(300);
   });
 
-  it("2. verifies sum of unchecked numbers of winner board using all random numbers", () => {
+  it("2. Find final score for puzzle", () => {
+    const data = readDataFile('src/public/day04GiantSquidData.txt');
+    const [randomNumbers, puzzleBoards, puzzleBoardsCheckedNumbers] = extractBoardsNumbers(data);
     const [
       isWinnerBoard, finalScore,
-    ] = findWinningBoard(drawnNumbers, boards, boardsCheckedNumbers);
+    ] = findWinningBoard(randomNumbers, puzzleBoards, puzzleBoardsCheckedNumbers);
     console.log('winner board ', isWinnerBoard);
     console.log('final score ', finalScore);
     expect(isWinnerBoard).toBe(true);
-    expect(finalScore).toBe(4512);
+    expect(finalScore).toBe(0);
   });
 });

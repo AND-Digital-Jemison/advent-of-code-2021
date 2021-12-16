@@ -6,5 +6,5 @@ const [randomNumbersAll, boards, boardsCheckedNumbers] = extractBoardsNumbers(da
 const findWinnigBoard = require("./day04findWinnigBoard");
 const [
   winningBoard, finalScore,
-] = findWinnigBoard(randomNumbersAll.slice(0, 10), boards, boardsCheckedNumbers);
+] = findWinnigBoard(randomNumbersAll, boards, boardsCheckedNumbers);
 console.log("The winning board number 1 and final score is", winningBoard, ' ', finalScore);
