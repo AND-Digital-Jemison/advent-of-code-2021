@@ -3,9 +3,11 @@
 ## To run
 
 Example
+
 $ node src/public/day05HydrothermalVents.js src/public/day05exampHydrothermalVentsData.txt
 
 Puzzle
+
 $ node src/public/day05HydrothermalVents.js src/public/day05HydrothermalVentsData.txt
 
 ## To test
