@@ -1,7 +1,7 @@
-function getVentsWithLinesCrossingDiagram(size, diagram) {
+function getVentsWithLinesCrossingDiagram(diagram) {
   let diagramRow = [];
   let diagramRowString = [];
-  for (let i = 0; i < size; i++) {
+  for (let i = 0; i < diagram.length; i++) {
     diagramRow = [...diagram[i]];
     diagramRowString = diagramRow.map(function (y) {
       return y === 0 ? "." : y.toString();
